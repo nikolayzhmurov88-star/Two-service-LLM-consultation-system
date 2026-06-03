@@ -1,6 +1,8 @@
 from pydantic_settings import BaseSettings
 from pydantic import ConfigDict
 
+# Класс конфигурации приложения
+
 class Settings(BaseSettings):
     app_name: str = "auth-service"
     env: str = "local"
