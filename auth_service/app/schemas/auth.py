@@ -1,9 +1,9 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 
 # Модель запроса на регистрацию
 class RegisterRequest(BaseModel):
     email: EmailStr
-    password: str
+    password: str = Field(..., min_length=1, description="Пароль не может быть пустым")
 
 # Модель возврата токена
 class TokenResponse(BaseModel):

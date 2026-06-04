@@ -6,6 +6,7 @@ from app.usecases.auth import AuthUsecase
 from app.core.security import decode_token
 from app.core.exceptions import InvalidTokenError, TokenExpiredError
 from jose import ExpiredSignatureError, JWTError
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 async def get_user_repo(db: AsyncSession = Depends(get_db)) -> UserRepository:
     return UserRepository(db)
@@ -13,10 +14,12 @@ async def get_user_repo(db: AsyncSession = Depends(get_db)) -> UserRepository:
 async def get_auth_uc(user_repo: UserRepository = Depends(get_user_repo)) -> AuthUsecase:
     return AuthUsecase(user_repo)
 
-async def get_current_user_id(authorization: str = Header(...)) -> int:
-    if not authorization.startswith("Bearer "):
-        raise InvalidTokenError()
-    token = authorization.split(" ")[1]
+    
+security = HTTPBearer()   
+
+async def get_current_user_id(credentials: HTTPAuthorizationCredentials = Depends(security)) -> int:
+    token = credentials.credentials  
+ 
     try:
         payload = decode_token(token)
         user_id = payload.get("sub")
