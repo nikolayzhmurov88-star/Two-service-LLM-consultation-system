@@ -1,7 +1,9 @@
 import pytest
 from app.core.security import hash_password, verify_password, create_access_token, decode_token
-from jose import ExpiredSignatureError
-from datetime import timedelta
+from jose import ExpiredSignatureError, jwt
+from datetime import datetime, timedelta
+from app.core.config import settings
+from app.core.exceptions import TokenExpiredError 
 
 def test_password_hashing():
     pwd = "secret"
@@ -12,7 +14,7 @@ def test_password_hashing():
 
 def test_jwt_create_and_decode():
     data = {"sub": "1", "role": "user"}
-    token = create_access_token(data, expires_delta=timedelta(minutes=1))
+    token = create_access_token(data)
     decoded = decode_token(token)
     assert decoded["sub"] == "1"
     assert decoded["role"] == "user"
@@ -20,6 +22,7 @@ def test_jwt_create_and_decode():
     assert "iat" in decoded
 
 def test_jwt_expired():
-    token = create_access_token({"sub": "1"}, expires_delta=timedelta(seconds=-1))
-    with pytest.raises(ExpiredSignatureError):
+    payload = {"sub": "1", "exp": datetime.utcnow() - timedelta(seconds=1)}
+    token = jwt.encode(payload, settings.jwt_secret, algorithm=settings.jwt_alg)
+    with pytest.raises(TokenExpiredError): 
         decode_token(token)

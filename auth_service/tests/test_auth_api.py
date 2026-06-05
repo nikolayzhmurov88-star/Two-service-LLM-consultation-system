@@ -3,6 +3,7 @@ from httpx import AsyncClient, ASGITransport
 from app.main import app
 from app.db.session import engine
 from app.db.base import Base
+from app.core.security import decode_token
 
 @pytest.fixture(autouse=True)
 async def setup_db():
@@ -24,7 +25,8 @@ async def test_register_login_me():
         resp = await client.post("/auth/login", data={"username": "test@example.com", "password": "123456"})
         assert resp.status_code == 200
         token2 = resp.json()["access_token"]
-        assert token == token2  # в нашем usecase оба возвращают токен – они одинаковы, но по логике могут быть разными
+        
+        assert decode_token(token)["sub"] == decode_token(token2)["sub"]
 
         # me
         resp = await client.get("/auth/me", headers={"Authorization": f"Bearer {token}"})
