@@ -1,0 +1,49 @@
+# Виртуальное окружение
+.venv
+venv
+env
+
+# Кэш и временные файлы Python
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.ruff_cache
+.mypy_cache
+
+# Файлы окружения (секреты) – не копируем реальные .env
+.env
+.env.*
+!.env.example
+
+# Локальные базы данных
+*.db
+*.sqlite
+*.sqlite3
+
+# Git и IDE
+.git
+.gitignore
+.vscode
+.idea
+.DS_Store
+
+# Логи
+*.log
+
+# Результаты сборки
+*.egg-info
+dist
+build
+
+# Документация и тесты 
+tests/
+README.md
+pytest.ini
+
+# Сам Dockerfile и .dockerignore
+Dockerfile
+.dockerignore
+
+# Файлы блокировки 
+uv.lock

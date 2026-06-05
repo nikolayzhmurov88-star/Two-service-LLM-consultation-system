@@ -1,6 +1,6 @@
 import pytest
 from app.core.security import hash_password, verify_password, create_access_token, decode_token
-from jose import ExpiredSignatureError, jwt
+from jose import jwt
 from datetime import datetime, timedelta
 from app.core.config import settings
 from app.core.exceptions import TokenExpiredError 

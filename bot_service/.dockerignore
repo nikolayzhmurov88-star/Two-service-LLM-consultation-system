@@ -1,0 +1,40 @@
+# Виртуальное окружение
+.venv
+venv
+env
+
+# Кэш Python
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.ruff_cache
+.mypy_cache
+
+# Файлы окружения (секреты)
+.env
+.env.*
+!.env.example
+
+# Git и IDE
+.git
+.gitignore
+.vscode
+.idea
+.DS_Store
+
+# Логи
+*.log
+
+# Тесты и документация (в образе не нужны)
+tests/
+conftest.py
+pytest.ini
+README.md
+
+# Dockerfile и .dockerignore
+Dockerfile
+.dockerignore
+
+# Файлы блокировки 
+uv.lock

@@ -23,4 +23,6 @@ dependencies = [
 ]
 
 [tool.uv]
-dev-dependencies = []
+dev-dependencies = [
+    "pytest-env>=1.6.0",
+]

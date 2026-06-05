@@ -39,7 +39,6 @@ class UserNotFoundError(BaseHTTPException):
 def validation_exception_handler(request: Request, exc: RequestValidationError):
     errors = []
     for err in exc.errors():
-        field = err['loc'][-1] if err['loc'] else 'поле'
         msg = err['msg']
         
         if msg == "value is not a valid email address: An email address must have an @-sign.":
@@ -51,8 +50,8 @@ def validation_exception_handler(request: Request, exc: RequestValidationError):
         elif msg == "String should have at least 1 character":
             msg = "Пароль не может быть пустым"
 
-        #else:
-        #    msg = "Некорректный ввод данных"
+        else:
+            msg = "Некорректный ввод данных"
         
         errors.append(msg)
     

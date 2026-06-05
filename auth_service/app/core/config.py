@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     
     jwt_secret: str
     jwt_alg: str = "HS256"
-    access_token_expire_minutes: int = 60
+    access_token_expire_minutes: int
     
     model_config = ConfigDict(env_file=".env", extra="ignore")
 
