@@ -1,4 +1,5 @@
 import pytest
+import uuid
 from unittest.mock import patch
 from aiogram.types import Message, Chat, User
 from jose import jwt
@@ -66,7 +67,23 @@ async def test_text_with_valid_token_calls_celery_and_sends_confirmation(fake_re
         
         mock_bot.send_message.assert_called_once()
         assert "Запрос отправлен" in mock_bot.send_message.call_args[0][1]
-        mock_delay.assert_called_once_with(123, "Привет, как дела?")
+        
+        mock_delay.assert_called_once()
+        args, kwargs = mock_delay.call_args
+        assert args[0] == 123
+        assert args[1] == "Привет, как дела?"
+        
+        # Проверяем, что task_id — валидный UUID
+        task_id = args[2]
+        assert isinstance(task_id, str)
+        # Проверяем формат UUID
+        try:
+            uuid.UUID(task_id)
+            is_valid_uuid = True
+        except ValueError:
+            is_valid_uuid = False
+        assert is_valid_uuid, f"task_id '{task_id}' не является валидным UUID"
+
 
 
 @pytest.mark.asyncio

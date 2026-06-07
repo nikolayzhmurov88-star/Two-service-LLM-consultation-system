@@ -26,7 +26,7 @@ async def custom_http_exception_handler(request: Request, exc: BaseHTTPException
 # Обработчик ошибок валидации Pydantic (RequestValidationError)
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
 
-# Подключение всех роутеров (включая /auth/...)
+# Подключение роутера 
 app.include_router(router)
 
 @app.get("/health")

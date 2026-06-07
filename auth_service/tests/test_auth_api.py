@@ -8,7 +8,7 @@ from app.core.security import decode_token
 @pytest.fixture(autouse=True)
 async def setup_db():
 
-    # Проверка, что исполььзуется тестовая база
+    # Проверка, что используется тестовая база
     from app.core.config import settings
     assert "memory" in settings.database_url, "Тесты должны использовать in‑memory БД"
 

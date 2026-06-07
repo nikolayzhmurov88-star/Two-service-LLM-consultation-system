@@ -1,7 +1,7 @@
 import pytest
 from app.core.security import hash_password, verify_password, create_access_token, decode_token
 from jose import jwt
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from app.core.config import settings
 from app.core.exceptions import TokenExpiredError 
 
@@ -22,7 +22,8 @@ def test_jwt_create_and_decode():
     assert "iat" in decoded
 
 def test_jwt_expired():
-    payload = {"sub": "1", "exp": datetime.utcnow() - timedelta(seconds=1)}
+    expire = datetime.now(timezone.utc) - timedelta(seconds=1)
+    payload = {"sub": "1", "exp": expire}
     token = jwt.encode(payload, settings.jwt_secret, algorithm=settings.jwt_alg)
     with pytest.raises(TokenExpiredError): 
         decode_token(token)

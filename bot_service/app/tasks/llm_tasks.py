@@ -1,15 +1,16 @@
-from celery import shared_task
+from app.infra.celery_app import celery_app
 from app.services.openrouter_client import ask_llm
-from aiogram import Bot
+import redis
+import asyncio
 from app.core.config import settings
 
-bot = Bot(token=settings.telegram_bot_token)
-
-
-@shared_task
-async def llm_request(chat_id: int, prompt: str):
+@celery_app.task
+def llm_request(chat_id: int, prompt: str, task_id: str):
     try:
-        answer = await ask_llm(prompt)  
-        await bot.send_message(chat_id, answer)
+        answer = asyncio.run(ask_llm(prompt))
+        r = redis.from_url(settings.redis_url, decode_responses=True)
+        r.setex(f"llm_result:{task_id}", 120, answer)
     except Exception as e:
-        print(f"Error: {e}")
+        r = redis.from_url(settings.redis_url, decode_responses=True)
+        r.setex(f"llm_result:{task_id}", 120, f"Error: {str(e)}")
+    return answer

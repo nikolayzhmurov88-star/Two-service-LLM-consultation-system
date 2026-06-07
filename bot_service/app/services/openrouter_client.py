@@ -1,6 +1,7 @@
 import httpx
 from app.core.config import settings
 
+
 async def ask_llm(prompt: str) -> str:
     headers = {
         "Authorization": f"Bearer {settings.openrouter_api_key}",

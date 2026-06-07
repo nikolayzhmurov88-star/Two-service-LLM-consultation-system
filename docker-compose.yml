@@ -55,4 +55,4 @@ services:
     depends_on:
       - rabbitmq
       - redis
-    command: celery -A app.infra.celery_app worker --pool=asyncio --loglevel=info
+    command: celery -A app.infra.celery_app worker --loglevel=info --pool=prefork --concurrency=1
