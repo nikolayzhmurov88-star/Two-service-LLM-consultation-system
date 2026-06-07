@@ -225,6 +225,7 @@ RABBITMQ_URL=pyamqp://guest:guest@rabbitmq:5672//
 ```
 
 > **Важно:** `JWT_SECRET` должен быть одинаковым в обоих сервисах!
+> Модель `liquid/lfm-2.5-1.2b-instruct:free` добавлена как быстрая альтернатива, однако на практике она стабильнее отвечает на запросы на английском языке.
 
 ### 3. Запуск Docker контейнеров
 
@@ -299,21 +300,29 @@ curl http://localhost:8001/health
 
 ---
 
-## Тестирование
+## Тестирование 
 
-### Запуск тестов Auth Service
+> Тесты проверяют только бизнес-логику и не требуют работающих контейнеров.  
+> В `auth_service` используется **in‑memory SQLite** (`DATABASE_URL=sqlite+aiosqlite:///:memory:`), чтобы тесты не трогали реальную базу данных.  
+> Виртуальные окружения создаются **отдельно для каждого сервиса**, так как их зависимости различаются.  
+
+###  Auth Service
 
 ```bash
+# Auth Service
 cd auth_service
+python3 -m venv .venv
 source .venv/bin/activate
-pytest -v
+pip install -e .
+DATABASE_URL="sqlite+aiosqlite:///:memory:" pytest -v
 ```
 
-### Запуск тестов Bot Service
-
+###  Bot Service
 ```bash
-cd bot_service
+cd ../bot_service
+python3 -m venv .venv
 source .venv/bin/activate
+pip install -e .
 PYTHONPATH=. pytest -v
 ```
 
@@ -323,28 +332,34 @@ PYTHONPATH=. pytest -v
 
 ### 1. Swagger Auth Service (регистрация, логин, /auth/me)
 
-*Приложите скриншоты:*
-- `screenshots/swagger-register.png` — регистрация пользователя
-- `screenshots/swagger-login.png` — логин и получение токена
-- `screenshots/swagger-me.png` — эндпоинт `/auth/me`
+### Регистрация пользователя
+![Регистрация](screenshots/Swagger_register_1.png)
+![Регистрация](screenshots/Swagger_register_2.png)
+
+### Login
+![Login](screenshots/Swagger_login_1.png)
+![Login](screenshots/Swagger_login_2.png)
+
+### /auth/me
+![Me](screenshots/Swagger_me.png)
+
 
 ### 2. Telegram-бот
 
-*Приложите скриншоты:*
-- `screenshots/telegram-token.png` — команда `/token`
-- `screenshots/telegram-chat.png` — ответ бота на сообщение
+![Telegram](screenshots/Telegram.png)
+
+К сожалению при тестировании был исчерпан лимит сообщений
 
 ### 3. RabbitMQ интерфейс
 
-*Приложите скриншоты:*
-- `screenshots/rabbitmq-queues.png` — очереди Celery
-- `screenshots/rabbitmq-connections.png` — активные подключения
+![RabbitMQ](screenshots/RabbitMQ.png)
+
 
 ### 4. Тестирование
 
-*Приложите скриншоты:*
-- `screenshots/tests-auth.png` — результаты тестов Auth Service
-- `screenshots/tests-bot.png` — результаты тестов Bot Service
+![Test_auth](screenshots/Test_auth.png)
+![Test_bot](screenshots/Test_bot.png)
+
 
 ---
 
