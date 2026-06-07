@@ -190,7 +190,7 @@ nano .env
 
 **`auth_service/.env`:**
 ```env
-JWT_SECRET=your_super_secret_key_change_me
+JWT_SECRET=your_super_secret_key_change_me #(! поменять на свой)
 JWT_ALG=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 DATABASE_URL=sqlite+aiosqlite:///./app.db
@@ -209,7 +209,7 @@ nano .env
 
 TELEGRAM_BOT_TOKEN=1234567890:ABCdefGHIJKLMNOPQRSTUVWXYZ_abcdefgh #(!Вставить свой токен)
 
-JWT_SECRET=your_super_secret_key_change_me #(! поменять на свой)
+JWT_SECRET=your_super_secret_key_change_me #(! поменять на свой) 
 JWT_ALG=HS256
 
 OPENROUTER_API_KEY=sk-or-v1-... #(! поменять на свой ключ)
