@@ -346,9 +346,9 @@ PYTHONPATH=. pytest -v
 
 ### 2. Telegram-бот
 
+![Telegram](screenshots/Telegram_1.png)
 ![Telegram](screenshots/Telegram.png)
 
-К сожалению при тестировании был исчерпан лимит сообщений
 
 ### 3. RabbitMQ интерфейс
 
